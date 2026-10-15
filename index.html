@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ka">
 <head>
@@ -9,8 +10,6 @@
 <style>
 :root {
   --bg:#090609;
-  --panel:#120a10;
-  --wine:#481326;
   --gold:#d7b779;
   --cream:#f5eee4;
   --muted:#b9a9ad;
@@ -44,6 +43,7 @@ button,input,textarea { font:inherit; }
   background:#000;
   display:grid;
   place-items:center;
+  overflow:hidden;
   transition:opacity 1.2s ease,visibility 1.2s ease;
 }
 
@@ -54,20 +54,25 @@ button,input,textarea { font:inherit; }
 }
 
 .opening video {
+  display:block;
   width:100%;
   height:100%;
   object-fit:contain;
+  object-position:center;
   background:#000;
 }
 
 .opening-label {
   position:absolute;
   bottom:24px;
+  left:0;
   width:100%;
   text-align:center;
   font:9px Arial,sans-serif;
   letter-spacing:4px;
   color:#ffffff75;
+  pointer-events:none;
+  text-shadow:0 1px 12px #000;
 }
 
 main {
@@ -84,6 +89,7 @@ main.visible {
 /* HERO */
 
 .hero {
+  min-height:100vh;
   min-height:100svh;
   position:relative;
   display:grid;
@@ -194,7 +200,7 @@ h1 span {
   letter-spacing:3px;
 }
 
-/* SHARED SECTION STYLES */
+/* SECTIONS */
 
 .section {
   padding:100px 22px;
@@ -225,7 +231,7 @@ h1 span {
   margin:auto;
 }
 
-/* SIX PHOTO MEMORIES */
+/* PHOTO GALLERY */
 
 .gallery {
   background:linear-gradient(180deg,#090609,#10080d 50%,#090609);
@@ -284,89 +290,6 @@ h1 span {
   font:11px/1.8 Arial,sans-serif;
   color:var(--muted);
   margin:0 4px 9px;
-}
-
-/* CINEMATIC MEMORY VIDEOS */
-
-.video-chapter {
-  background:linear-gradient(180deg,#090609,#160a11 48%,#090609);
-  overflow:hidden;
-}
-
-.video-chapter:nth-of-type(even) {
-  background:radial-gradient(
-    ellipse at 50% 35%,
-    #35101d 0%,#10080d 58%,#090609 100%
-  );
-}
-
-.video-frame {
-  width:min(460px,100%);
-  max-height:76svh;
-  aspect-ratio:9 / 16;
-  margin:0 auto;
-  padding:8px;
-  position:relative;
-  border:1px solid #d7b77970;
-  background:#050405;
-  box-shadow:0 25px 80px #0008;
-}
-
-.video-frame:before {
-  content:"";
-  position:absolute;
-  inset:4px;
-  border:1px solid #d7b77922;
-  pointer-events:none;
-  z-index:1;
-}
-
-.memory-video {
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:contain;
-  background:#000;
-}
-
-.video-caption {
-  text-align:center;
-  max-width:560px;
-  margin:26px auto 0;
-}
-
-.video-caption h3 {
-  font-size:clamp(25px,4vw,38px);
-  line-height:1.3;
-  font-weight:400;
-  font-style:italic;
-  margin:10px 0;
-}
-
-.video-caption p {
-  color:var(--muted);
-  font:12px/1.9 Arial,sans-serif;
-  margin:0 auto;
-  max-width:480px;
-}
-
-.video-end-mark {
-  color:var(--gold);
-  letter-spacing:4px;
-  font:9px Arial,sans-serif;
-  margin-top:18px;
-}
-
-@media(max-width:430px) {
-  .video-chapter { padding:62px 15px; }
-
-  .video-frame {
-    width:min(100%,390px);
-    max-height:70svh;
-    padding:6px;
-  }
-
-  .video-caption { margin-top:21px; }
 }
 
 /* LOVE LETTER */
@@ -518,7 +441,7 @@ h1 span {
   margin:0;
 }
 
-/* NINI'S ANNIVERSARY MESSAGE FORM */
+/* NINI'S LETTER FORM */
 
 .reply-section {
   background:radial-gradient(
@@ -575,29 +498,28 @@ h1 span {
   margin-bottom:10px;
 }
 
-.field input,.field textarea {
+.field textarea {
+  display:block;
   width:100%;
-  border:1px solid #d7b77940;
-  background:#100a10;
+  min-height:280px;
+  resize:vertical;
+  border:1px solid #d7b77950;
+  background:linear-gradient(145deg,#130b12,#0b070b);
   color:var(--cream);
-  padding:14px 15px;
+  padding:20px;
   outline:none;
   border-radius:0;
-  transition:border-color .2s;
+  font:14px/2 Arial,sans-serif;
+  transition:border-color .25s,box-shadow .25s;
 }
 
-.field input:focus,.field textarea:focus {
+.field textarea:focus {
   border-color:var(--gold);
+  box-shadow:0 0 0 2px #d7b77912;
 }
 
-.field input::placeholder,.field textarea::placeholder {
+.field textarea::placeholder {
   color:#8d7e84;
-}
-
-.field textarea {
-  min-height:180px;
-  resize:vertical;
-  line-height:1.8;
 }
 
 .form-bottom {
@@ -690,9 +612,9 @@ footer {
   to { opacity:1;transform:translateY(0); }
 }
 
-/* TABLET + PHONE */
+/* RESPONSIVE */
 
-@media(max-width:760px) {
+@media (max-width:760px) {
   .section { padding:76px 17px; }
 
   .gallery-grid {
@@ -725,9 +647,7 @@ footer {
   .timeline-date { font-size:9px; }
 }
 
-/* NARROW 9:16 SCREENS */
-
-@media(max-width:430px) {
+@media (max-width:430px) {
   .hero { padding:60px 18px; }
 
   h1 {
@@ -760,6 +680,7 @@ footer {
   }
 
   .timeline-content { padding:17px; }
+
   .timeline-content:before {
     left:-36px;
     width:9px;
@@ -771,14 +692,13 @@ footer {
   .timeline-date { font-size:8px; }
 
   .reply-card { padding:24px 18px; }
-
+  .field textarea { min-height:250px; }
   .form-bottom { align-items:flex-start; }
-
   .submit-btn { width:100%; }
   .form-note { max-width:none; }
 }
 
-@media(prefers-reduced-motion:reduce) {
+@media (prefers-reduced-motion:reduce) {
   *,*:before,*:after {
     animation:none!important;
     transition:none!important;
@@ -790,13 +710,13 @@ footer {
 
 <body>
 
-<!-- VIDEO 1: CINEMATIC INTRO -->
+<!-- VIDEO INTRO: CLEAN SCREEN -->
 
 <section class="opening" id="opening" aria-label="შესავალი ვიდეო">
   <video id="openingVideo" autoplay muted playsinline preload="auto">
     <source src="video1.mp4" type="video/mp4">
+    შენი ბრაუზერი ვიდეოს დაკვრას ვერ ახერხებს.
   </video>
-
   <div class="opening-label" id="openingLabel">
     A LITTLE FILM FOR US
   </div>
@@ -805,8 +725,6 @@ footer {
 <audio id="music" src="music.mp3" preload="auto" loop></audio>
 
 <main id="story">
-
-  <!-- HERO -->
 
   <section class="hero" id="top">
     <div class="hero-content">
@@ -836,7 +754,7 @@ footer {
     </div>
   </section>
 
-  <!-- SIX PHOTOS -->
+  <!-- MEMORIES -->
 
   <section class="section gallery" id="memories">
     <div class="section-inner">
@@ -916,48 +834,7 @@ footer {
     </div>
   </section>
 
-  <!-- VIDEO 2: AFTER THE PHOTO GALLERY -->
-
-  <section class="section video-chapter" id="video-memory-2">
-    <div class="section-inner">
-
-      <header class="section-heading">
-        <div class="section-kicker">MOVING MEMORY · 02</div>
-        <h2>კადრი, რომელიც მინდა დამამახსოვრდეს</h2>
-        <p>
-          ზოგი მოგონება ფოტოზე მეტია — ის მოძრაობით,
-          სითბოთი და ემოციით ცოცხლობს.
-        </p>
-      </header>
-
-      <div class="video-frame">
-        <video
-          class="memory-video"
-          data-memory-video
-          controls
-          muted
-          playsinline
-          loop
-          preload="metadata"
-          aria-label="მეორე მოგონების ვიდეო">
-
-          <source src="video2.mp4" type="video/mp4">
-          შენს ბრაუზერს ვიდეოს დაკვრა არ შეუძლია.
-        </video>
-      </div>
-
-      <div class="video-caption">
-        <div class="video-end-mark">DEME × NINI</div>
-        <h3>ჩვენი პატარა სამყარო ♡</h3>
-        <p>
-          ერთი პატარა კადრი, რომელსაც თავისი ადგილი აქვს ჩვენს ისტორიაში.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- LOVE LETTER -->
+  <!-- DEME'S LETTER TO NINI -->
 
   <section class="section letter-section" id="letter">
     <div class="section-inner letter-layout">
@@ -966,7 +843,6 @@ footer {
         <div class="big-mark">“</div>
         <div class="section-kicker">A LETTER FROM MY HEART</div>
         <h2>ჩემო ნინიკო,<br>ეს წერილი შენთვისაა.</h2>
-
         <p>
           ზოგჯერ სიტყვები ვერ იტევს ყველაფერს,
           რასაც გული გრძნობს. მაგრამ მაინც მინდა,
@@ -1006,49 +882,7 @@ footer {
     </div>
   </section>
 
-  <!-- VIDEO 3: BEFORE THE TIMELINE -->
-
-  <section class="section video-chapter" id="video-memory-3">
-    <div class="section-inner">
-
-      <header class="section-heading">
-        <div class="section-kicker">MOVING MEMORY · 03</div>
-        <h2>უბრალოდ ერთად ყოფნა</h2>
-        <p>
-          ყოველთვის განსაკუთრებული რამ არ არის საჭირო —
-          ზოგჯერ ყველაზე ლამაზი ჩვეულებრივი მომენტებია.
-        </p>
-      </header>
-
-      <div class="video-frame">
-        <video
-          class="memory-video"
-          data-memory-video
-          controls
-          muted
-          playsinline
-          loop
-          preload="metadata"
-          aria-label="მესამე მოგონების ვიდეო">
-
-          <source src="video3.mp4" type="video/mp4">
-          შენს ბრაუზერს ვიდეოს დაკვრა არ შეუძლია.
-        </video>
-      </div>
-
-      <div class="video-caption">
-        <div class="video-end-mark">A MOMENT TO KEEP</div>
-        <h3>მომენტები, რომლებიც გულში რჩება</h3>
-        <p>
-          ეს ჩვენი ისტორიის კიდევ ერთი პატარა ნაწილია —
-          და წინ კიდევ ბევრი გველოდება.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- TIMELINE -->
+  <!-- OUR TIMELINE -->
 
   <section class="section timeline" id="timeline">
     <div class="section-inner">
@@ -1123,49 +957,7 @@ footer {
     </div>
   </section>
 
-  <!-- VIDEO 4: FINAL MEMORY REEL -->
-
-  <section class="section video-chapter" id="video-memory-4">
-    <div class="section-inner">
-
-      <header class="section-heading">
-        <div class="section-kicker">THE FINAL REEL · 04</div>
-        <h2>ჩვენი ისტორია კადრებად</h2>
-        <p>
-          ექვსი ფოტო, ერთი პატარა ვიდეო და უამრავი მოგონება,
-          რომელსაც თავისი მნიშვნელობა აქვს.
-        </p>
-      </header>
-
-      <div class="video-frame">
-        <video
-          class="memory-video"
-          data-memory-video
-          controls
-          muted
-          playsinline
-          loop
-          preload="metadata"
-          aria-label="ფინალური ფოტო-ვიდეო">
-
-          <source src="video4.mp4" type="video/mp4">
-          შენს ბრაუზერს ვიდეოს დაკვრა არ შეუძლია.
-        </video>
-      </div>
-
-      <div class="video-caption">
-        <div class="video-end-mark">22 OCTOBER · 2026</div>
-        <h3>ერთი წელი — და ეს მხოლოდ დასაწყისია.</h3>
-        <p>
-          დემე × ნინი. ჩვენი ისტორიის შემდეგი გვერდები
-          ჯერ კიდევ დასაწერია. ♡
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- NINI'S LETTER TO DEME -->
+  <!-- ONLY ONE WRITING FIELD -->
 
   <section class="section reply-section" id="your-letter">
     <div class="section-inner">
@@ -1176,65 +968,44 @@ footer {
           <div class="section-kicker">A LITTLE MESSAGE FOR DEME</div>
           <h2>ახლა შენი ჯერია, ნინიკო ♡</h2>
           <p>
-            თუ გინდა, დამიტოვე პატარა წერილი ჩვენი პირველი წლის შესახებ.
-            შენი სიტყვები ჩემთვის ყველაზე ძვირფასი მოგონება იქნება.
+            თუ გინდა, აქ დამიტოვე შენი წერილი.
+            მინდა, შენი სიტყვები ჩვენი პირველი წლის
+            მოგონებად შევინახო. ♡
           </p>
         </header>
 
-        <form
-          id="loveForm"
+        <form id="loveForm"
           action="https://formspree.io/f/xwlpwawv"
           method="POST">
 
-          <input
-            type="hidden"
-            name="_subject"
-            value="ნინის მილოცვა დემეს — ჩვენი პირველი წლისთავი">
+          <input type="hidden" name="_subject"
+            value="ნინის წერილი დემეს — ჩვენი პირველი წლისთავი">
 
-          <input
-            type="hidden"
-            name="საიტი"
+          <input type="hidden" name="საიტი"
             value="დემე × ნინი — ერთი წლისთავი">
 
           <div class="field">
-            <label for="letterTitle">წერილის სათაური</label>
-            <input
-              id="letterTitle"
-              name="წერილის სათაური"
-              type="text"
-              placeholder="მაგ. ჩემო საყვარელო დემე…"
-              required
-              maxlength="120">
-          </div>
-
-          <div class="field">
-            <label for="letterMessage">შენი წერილი</label>
+            <label for="letterMessage">შენი წერილი ♡</label>
             <textarea
               id="letterMessage"
               name="ნინის წერილი"
-              placeholder="ჩემო დემე, გილოცავ ჩვენს პირველ წელს… ♡"
+              placeholder="ჩემო დემე…&#10;&#10;მინდა, რომ იცოდე…"
               required
               maxlength="5000"></textarea>
           </div>
 
           <div class="form-bottom">
-            <button
-              class="submit-btn"
-              id="submitBtn"
-              type="submit">
+            <button class="submit-btn" id="submitBtn" type="submit">
               გაუგზავნე დემეს ♡
             </button>
 
             <div class="form-note">
-              შენი წერილი გაიგზავნება მითითებულ Formspree ფორმაზე.
+              შენი წერილი პირადად დემესთვის გაიგზავნება.
             </div>
           </div>
 
-          <div
-            class="status"
-            id="formStatus"
-            role="status"
-            aria-live="polite"></div>
+          <div class="status" id="formStatus"
+            role="status" aria-live="polite"></div>
 
         </form>
       </div>
@@ -1263,13 +1034,36 @@ footer {
 
   let started = false;
 
+  function fitOpeningVideo() {
+    if (!video.videoWidth || !video.videoHeight) return;
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const ratio = video.videoWidth / video.videoHeight;
+
+    let width = vw;
+    let height = width / ratio;
+
+    if (height > vh) {
+      height = vh;
+      width = height * ratio;
+    }
+
+    video.style.width = Math.floor(width) + "px";
+    video.style.height = Math.floor(height) + "px";
+  }
+
+  video.addEventListener("loadedmetadata", fitOpeningVideo);
+  window.addEventListener("resize", fitOpeningVideo);
+
+  if (video.readyState >= 1) fitOpeningVideo();
+
   function startMusic() {
     music.volume = 0.72;
 
     music.play().then(() => {
       musicIndicator.classList.add("show");
     }).catch(() => {
-      // ზოგ ბრაუზერში მუსიკას მომხმარებლის შეხება სჭირდება.
       const unlock = () => {
         music.play().then(() => {
           musicIndicator.classList.add("show");
@@ -1287,14 +1081,11 @@ footer {
     started = true;
     opening.classList.add("hide");
     story.classList.add("visible");
-
     startMusic();
   }
 
-  // პირველი ვიდეოს დასრულების შემდეგ იხსნება საიტი.
   video.addEventListener("ended", beginStory);
 
-  // თუ ვიდეო ვერ ჩაიტვირთა, საიტი ჩაკეტილი არ დარჩება.
   video.addEventListener("error", () => {
     openingLabel.textContent =
       "ვიდეო ვერ ჩაიტვირთა — შეეხე გასაგრძელებლად";
@@ -1304,38 +1095,13 @@ footer {
     });
   });
 
-  // კომპიუტერზე Escape-ით შესაძლებელია შესავლის გამოტოვება.
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && !started) {
       beginStory();
     }
   });
 
-  // ვიდეოები ირთვება ეკრანზე გამოჩენისას და ჩერდება გასვლისას.
-  const memoryVideos = document.querySelectorAll("[data-memory-video]");
-
-  if ("IntersectionObserver" in window) {
-    const videoObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const clip = entry.target;
-
-        if (
-          entry.isIntersecting &&
-          entry.intersectionRatio >= 0.45
-        ) {
-          clip.play().catch(() => {});
-        } else {
-          clip.pause();
-        }
-      });
-    }, {
-      threshold:[0,0.45,0.75]
-    });
-
-    memoryVideos.forEach(clip => videoObserver.observe(clip));
-  }
-
-  // FORMSPREE FORM SUBMISSION
+  // FORMSPREE
   const form = document.getElementById("loveForm");
   const status = document.getElementById("formStatus");
   const submitBtn = document.getElementById("submitBtn");
@@ -1353,9 +1119,7 @@ footer {
       const response = await fetch(form.action, {
         method:"POST",
         body:new FormData(form),
-        headers:{
-          "Accept":"application/json"
-        }
+        headers:{ "Accept":"application/json" }
       });
 
       if (!response.ok) {
