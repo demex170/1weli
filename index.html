@@ -6,21 +6,17 @@
 <meta name="theme-color" content="#050305">
 <title>ნინიკო</title>
 
-<!-- ბმულის გადახედვა (Messenger, Instagram, WhatsApp...): preview.jpg = video1-ის კადრი -->
+<!-- ბმულის გადახედვა (Messenger, Instagram, WhatsApp...): ფონი = photo6.png -->
 <meta name="description" content="შენთვის ♡">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://demex170.github.io/1weli/">
 <meta property="og:site_name" content="ნინიკო">
 <meta property="og:title" content="ნინიკო">
 <meta property="og:description" content="შენთვის ♡">
-<meta property="og:image" content="https://demex170.github.io/1weli/preview.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:video" content="https://demex170.github.io/1weli/video1.mp4">
-<meta property="og:video:type" content="video/mp4">
+<meta property="og:image" content="https://demex170.github.io/1weli/photo6.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ნინიკო">
-<meta name="twitter:image" content="https://demex170.github.io/1weli/preview.jpg">
+<meta name="twitter:image" content="https://demex170.github.io/1weli/photo6.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300;1,500&family=Noto+Serif+Georgian:wght@300;400;600&family=Noto+Sans+Georgian:wght@300;400&display=swap" rel="stylesheet">
@@ -244,17 +240,13 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
 
 <!-- OPENING: video1 only, clean screen -->
 <section class="opening" id="opening" aria-label="შესავალი ვიდეო">
-  <video id="openingVideo" playsinline preload="auto" poster="preview.jpg">
+  <video id="openingVideo" playsinline preload="auto">
     <source src="video1.mp4" type="video/mp4">
   </video>
 </section>
 
 <!-- FULLSCREEN VIDEOS -->
-<div class="cinema" id="cinema" aria-hidden="true">
-  <video class="cv" id="v3" playsinline preload="none" data-src="video3.mp4"></video>
-  <video class="cv" id="v4" playsinline preload="none" data-src="video4.mp4"></video>
-  <video class="cv" id="v2" playsinline preload="none" data-src="video2.mp4"></video>
-</div>
+<div class="cinema" id="cinema" aria-hidden="true"></div>
 
 <audio id="music" src="music.mp3" preload="auto" loop></audio>
 
@@ -300,7 +292,7 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
           <figcaption><h3>პატარა დეტალები</h3><p>ის მომენტები, რომლებიც არასდროს მავიწყდება.</p></figcaption>
         </figure>
         <figure class="memory reveal" style="margin:0;--d:.24s">
-          <div class="frame"><div class="media"><video src="video5.mp4" muted loop playsinline preload="metadata" data-auto aria-label="მესამე მოგონება"></video></div></div>
+          <div class="frame"><div class="media"><video data-src="video5.mp4" muted loop playsinline preload="none" data-auto aria-label="მესამე მოგონება"></video></div></div>
           <figcaption><h3>შენი ღიმილი</h3><p>ჩემი ერთ-ერთი ყველაზე საყვარელი მოგონება.</p></figcaption>
         </figure>
         <figure class="memory reveal" style="margin:0">
@@ -495,11 +487,20 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
     if (!userOff) { music.volume = 0; tryMusic(); fadeTo(VOL); }
     setTimeout(prepCinema, 2500);
   }
+  const CV_SRC = { v3: "video3.mp4", v4: "video4.mp4", v2: "video2.mp4" };
+  function getCV(id) {
+    let v = $(id);
+    if (!v) {
+      v = document.createElement("video");
+      v.id = id; v.className = "cv";
+      v.setAttribute("playsinline", ""); v.playsInline = true;
+      v.preload = "auto"; v.src = CV_SRC[id];
+      cinema.appendChild(v);
+    }
+    return v;
+  }
   function prepCinema() {
-    ["v3", "v4", "v2"].forEach(id => {
-      const v = $(id);
-      if (!v.getAttribute("src")) { v.preload = "auto"; v.src = v.dataset.src; v.load(); }
-    });
+    ["v3", "v4", "v2"].forEach(getCV);
   }
   function startOpening() {
     v1.muted = false;
@@ -527,8 +528,7 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
   }
   function playCinema(id, cb) {
     if (inCinema) return;
-    const v = $(id);
-    if (!v.getAttribute("src")) { v.src = v.dataset.src; }
+    const v = getCV(id);
     inCinema = true;
     body.classList.add("locked");
     cinema.classList.add("open");
@@ -641,7 +641,10 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
   const mv = document.querySelector("video[data-auto]");
   mv.muted = true;
   new IntersectionObserver(es => es.forEach(en => {
-    if (en.isIntersecting && started) mv.play().catch(() => {}); else mv.pause();
+    if (en.isIntersecting && started) {
+      if (!mv.getAttribute("src")) mv.src = mv.dataset.src;
+      mv.play().catch(() => {});
+    } else mv.pause();
   }), { threshold: .35 }).observe(mv);
 
   const bar = $("progress");
