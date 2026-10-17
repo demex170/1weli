@@ -6,22 +6,21 @@
 <meta name="theme-color" content="#050305">
 <title>ნინიკო</title>
 
-<!-- ბმულის გადახედვა (Messenger, Instagram, WhatsApp...).
-     ჩაანაცვლე YOUR-DOMAIN.com შენი რეალური მისამართით, სადაც საიტს ატვირთავ.
-     preview.jpg = video1-ის ლამაზი კადრი (1200×630 ან 1200×1200). -->
+<!-- ბმულის გადახედვა (Messenger, Instagram, WhatsApp...): preview.jpg = video1-ის კადრი -->
 <meta name="description" content="შენთვის ♡">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://demex170.github.io/1weli/">
 <meta property="og:site_name" content="ნინიკო">
 <meta property="og:title" content="ნინიკო">
 <meta property="og:description" content="შენთვის ♡">
-<meta property="og:image" content="https://YOUR-DOMAIN.com/preview.jpg">
+<meta property="og:image" content="https://demex170.github.io/1weli/preview.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:video" content="https://YOUR-DOMAIN.com/video1.mp4">
+<meta property="og:video" content="https://demex170.github.io/1weli/video1.mp4">
 <meta property="og:video:type" content="video/mp4">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ნინიკო">
-<meta name="twitter:image" content="https://YOUR-DOMAIN.com/preview.jpg">
+<meta name="twitter:image" content="https://demex170.github.io/1weli/preview.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300;1,500&family=Noto+Serif+Georgian:wght@300;400;600&family=Noto+Sans+Georgian:wght@300;400&display=swap" rel="stylesheet">
@@ -252,9 +251,9 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
 
 <!-- FULLSCREEN VIDEOS -->
 <div class="cinema" id="cinema" aria-hidden="true">
-  <video class="cv" id="v3" playsinline preload="auto" src="video3.mp4"></video>
-  <video class="cv" id="v4" playsinline preload="auto" src="video4.mp4"></video>
-  <video class="cv" id="v2" playsinline preload="auto" src="video2.mp4"></video>
+  <video class="cv" id="v3" playsinline preload="none" data-src="video3.mp4"></video>
+  <video class="cv" id="v4" playsinline preload="none" data-src="video4.mp4"></video>
+  <video class="cv" id="v2" playsinline preload="none" data-src="video2.mp4"></video>
 </div>
 
 <audio id="music" src="music.mp3" preload="auto" loop></audio>
@@ -435,6 +434,10 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
   const musicBtn = $("musicBtn"), musicText = $("musicText"), cinema = $("cinema");
   const finale = $("finale"), body = document.body;
 
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  scrollTo(0, 0);
+  document.querySelectorAll("video").forEach(v => { if (v !== v1) v.pause(); });
+
   let started = false, wanted = false, userOff = false, inCinema = false, primed = false, resume = false;
   const VOL = .75;
 
@@ -490,6 +493,13 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
     story.classList.add("visible");
     wanted = true;
     if (!userOff) { music.volume = 0; tryMusic(); fadeTo(VOL); }
+    setTimeout(prepCinema, 2500);
+  }
+  function prepCinema() {
+    ["v3", "v4", "v2"].forEach(id => {
+      const v = $(id);
+      if (!v.getAttribute("src")) { v.preload = "auto"; v.src = v.dataset.src; v.load(); }
+    });
   }
   function startOpening() {
     v1.muted = false;
@@ -518,6 +528,7 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
   function playCinema(id, cb) {
     if (inCinema) return;
     const v = $(id);
+    if (!v.getAttribute("src")) { v.src = v.dataset.src; }
     inCinema = true;
     body.classList.add("locked");
     cinema.classList.add("open");
@@ -630,7 +641,7 @@ footer{text-align:center;padding:40px 15px 56px;color:#8a7a80;font:300 12px/2 va
   const mv = document.querySelector("video[data-auto]");
   mv.muted = true;
   new IntersectionObserver(es => es.forEach(en => {
-    if (en.isIntersecting) mv.play().catch(() => {}); else mv.pause();
+    if (en.isIntersecting && started) mv.play().catch(() => {}); else mv.pause();
   }), { threshold: .35 }).observe(mv);
 
   const bar = $("progress");
